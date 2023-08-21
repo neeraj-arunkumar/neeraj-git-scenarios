@@ -1,0 +1,1724 @@
+include:
+- file: scenario://workspace/include/truck_and_trailer.inc.yaml
+metadata:
+  name: Normal Traffic Flow Resumed
+  scenario_version: v0.96
+  author_email: stan@applied.co
+  description: Normal traffic flow is resumed after being at a standstill. Traffic follow distance, accel rate, and top speed varied.
+sim_end:
+  until:
+  - timeout: {secs: 90s}
+map:
+  key: straight_5
+projection_settings:
+  utm:
+    north: true
+    zone: 10
+global_variables:
+- name: map_start_x
+  value: 500000
+- name: map_start_y
+  value: 4500000
+- name: dist_gap
+  value: 15
+- name: lead_vehicles_motion_profile_phases
+  value:
+    phases:
+    - ramp_velocity:
+        target: 0
+        rate: -3
+    - hold_velocity:
+        duration: 10
+    - ramp_velocity:
+        target: $top_speed
+        rate: $accel_rate
+    - hold_velocity:
+        duration: 50
+- name: headway_secs_lower_bound
+  value: 1
+- name: headway_secs_upper_bound
+  value: 3
+trip_agent:
+  behavior:
+  - generate_route:
+      dest:
+        utm:
+          x: 1386.1415604679273
+          y: 92
+          z: 0
+      start: {utm: {x: 151.26877728820125, y: 92}}
+agents:
+- ego:
+    initial_position:
+      relative:
+        to:
+          map_point:
+            x: $map_start_x
+            y: $map_start_y
+            heading: 0
+        lane_relative_coordinates:
+          relative_lane: -2
+          lane_split_preference: FORWARD
+          s: 500
+          t: 0
+      heading: 0
+    initial_velocity_mps: 10
+    behaviors:
+    - smooth_lane_keeping:
+        adaptive_cruise:
+          desired_time_gap: 2s
+          enforce_max_bounds: true
+          max_accel: 3
+          max_decel: 3
+          min_dist: 5
+          lookahead_dist: 200
+          desired_speed: 25
+        constant_velocity:
+        params:
+          distance: 2000
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        motion_profile: $lead_vehicles_motion_profile_phases
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 0
+          lane_split_preference: FORWARD
+          s: !math "5 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 1
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 0
+          lane_split_preference: FORWARD
+          s: !math "4 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 2
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 0
+          lane_split_preference: FORWARD
+          s: !math "3 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 3
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 0
+          lane_split_preference: FORWARD
+          s: !math "2 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 4
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 0
+          lane_split_preference: FORWARD
+          s: !math "1 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 5
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 0
+          lane_split_preference: FORWARD
+          s: !math "-1 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 6
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 0
+          lane_split_preference: FORWARD
+          s: !math "-2 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 7
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 0
+          lane_split_preference: FORWARD
+          s: !math "-3 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 8
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        motion_profile: $lead_vehicles_motion_profile_phases
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -1
+          lane_split_preference: FORWARD
+          s: !math "5 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 9
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -1
+          lane_split_preference: FORWARD
+          s: !math "4 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 10
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -1
+          lane_split_preference: FORWARD
+          s: !math "3 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 11
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -1
+          lane_split_preference: FORWARD
+          s: !math "2 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 12
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -1
+          lane_split_preference: FORWARD
+          s: !math "1 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 13
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -1
+          lane_split_preference: FORWARD
+          s: !math "-1 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 14
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -1
+          lane_split_preference: FORWARD
+          s: !math "-2 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 15
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -1
+          lane_split_preference: FORWARD
+          s: !math "-3 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 16
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -1
+          lane_split_preference: FORWARD
+          s: 0
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 17
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        motion_profile: $lead_vehicles_motion_profile_phases
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 1
+          lane_split_preference: FORWARD
+          s: !math "5 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 18
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 1
+          lane_split_preference: FORWARD
+          s: !math "4 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 19
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 1
+          lane_split_preference: FORWARD
+          s: !math "3 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 20
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 1
+          lane_split_preference: FORWARD
+          s: !math "2 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 21
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 1
+          lane_split_preference: FORWARD
+          s: !math "1 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 22
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 1
+          lane_split_preference: FORWARD
+          s: !math "-1 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 23
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 1
+          lane_split_preference: FORWARD
+          s: !math "-2 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 24
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 1
+          lane_split_preference: FORWARD
+          s: !math "-3 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 25
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 1
+          lane_split_preference: FORWARD
+          s: 0
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 26
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        motion_profile: $lead_vehicles_motion_profile_phases
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -2
+          lane_split_preference: FORWARD
+          s: !math "5 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 27
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -2
+          lane_split_preference: FORWARD
+          s: !math "4 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 28
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -2
+          lane_split_preference: FORWARD
+          s: !math "3 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 29
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -2
+          lane_split_preference: FORWARD
+          s: !math "2 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 30
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -2
+          lane_split_preference: FORWARD
+          s: !math "1 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 31
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -2
+          lane_split_preference: FORWARD
+          s: !math "-1 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 32
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -2
+          lane_split_preference: FORWARD
+          s: !math "-2 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 33
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -2
+          lane_split_preference: FORWARD
+          s: !math "-3 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 34
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: -2
+          lane_split_preference: FORWARD
+          s: 0
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 35
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        motion_profile: $lead_vehicles_motion_profile_phases
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 2
+          lane_split_preference: FORWARD
+          s: !math "5 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 36
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 2
+          lane_split_preference: FORWARD
+          s: !math "4 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 37
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 2
+          lane_split_preference: FORWARD
+          s: !math "3 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 38
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 2
+          lane_split_preference: FORWARD
+          s: !math "2 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 39
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 2
+          lane_split_preference: FORWARD
+          s: !math "1 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 40
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 2
+          lane_split_preference: FORWARD
+          s: !math "-1 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 41
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 2
+          lane_split_preference: FORWARD
+          s: !math "-2 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 42
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 2
+          lane_split_preference: FORWARD
+          s: !math "-3 * $dist_gap"
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 43
+- obstacle:
+    behaviors:
+    - smooth_lane_keeping:
+        constant_velocity:
+        adaptive_cruise:
+          max_accel: 3
+          max_decel: 3
+          desired_time_gap: $desired_time_gap_sweep
+          enforce_max_bounds: true
+          lookahead_dist: 100
+          min_dist: 5
+          desired_speed: $top_speed
+        params:
+          distance: 2000
+    model:
+      static:
+        height: 1.5
+        point:
+        - x: 2.3
+          y: 0.9
+        - x: 2.3
+          y: -0.9
+        - x: -2.3
+          y: -0.9
+        - x: -2.3
+          y: 0.9
+    initial_state:
+      relative:
+        to:
+          ego: true
+        lane_relative_coordinates:
+          relative_lane: 2
+          lane_split_preference: FORWARD
+          s: 0
+          t: 0.0
+      speed_mps: 10
+    type: VEHICLE
+    id: 44
+parameter_sweeps:
+- list:
+    values: [1s, 2s, 3s]
+    var: desired_time_gap_sweep
+- range:
+    var: accel_rate
+    first_value: 1.5
+    last_value: 2
+    num_steps: 2
+- range:
+    var: top_speed
+    first_value: 15
+    last_value: 25
+    num_steps: 2

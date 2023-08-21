@@ -20,7 +20,7 @@ global_variables:
 - name: map_start_y
   value: 4500002
 - name: dist_gap
-  value: 15
+  value: 16
 - name: lead_vehicles_motion_profile_phases
   value:
     phases:

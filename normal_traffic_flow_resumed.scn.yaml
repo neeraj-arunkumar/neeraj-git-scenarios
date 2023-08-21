@@ -13,7 +13,7 @@ map:
 projection_settings:
   utm:
     north: true
-    zone: 11
+    zone: 12
 global_variables:
 - name: map_start_x
   value: 500000

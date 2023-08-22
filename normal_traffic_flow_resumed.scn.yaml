@@ -16,7 +16,7 @@ projection_settings:
     zone: 12
 global_variables:
 - name: map_start_x
-  value: 500000
+  value: 500001
 - name: map_start_y
   value: 4500005
 - name: dist_gap
